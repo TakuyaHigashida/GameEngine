@@ -8,6 +8,7 @@ public:
 	~CWindowCreate() {}
 
 	static void NewWindow(int w, int h, wchar_t* name, HINSTANCE hInstance);
+	static HWND GethWnd() { return m_hWnd; }
 
 private:
 	static HWND m_hWnd;		//ウィンドウのハンドル
