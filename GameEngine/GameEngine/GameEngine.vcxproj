@@ -139,11 +139,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DeviceCreate.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowCreate.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DeviceCreate.h" />
+    <ClInclude Include="DirectXTex.h" />
+    <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="WindowCreate.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DirectXTex.inl" />
+    <None Include="PolygonDraw.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="DirectXTex.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

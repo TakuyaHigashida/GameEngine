@@ -16,6 +16,12 @@
     <Filter Include="ソース ファイル\ウィンドウクリエイト">
       <UniqueIdentifier>{32c1fc95-a71b-4d0f-b586-35be7be55bb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\DirectXTex">
+      <UniqueIdentifier>{968c0f4a-68cb-4705-9c17-098c3007b00b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\DirectX環境構築">
+      <UniqueIdentifier>{2a5a6617-c301-4bb1-a4f6-383a1845fb1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,10 +30,38 @@
     <ClCompile Include="WindowCreate.cpp">
       <Filter>ソース ファイル\ウィンドウクリエイト</Filter>
     </ClCompile>
+    <ClCompile Include="WICTextureLoader.cpp">
+      <Filter>ソース ファイル\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceCreate.cpp">
+      <Filter>ソース ファイル\DirectX環境構築</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowCreate.h">
       <Filter>ソース ファイル\ウィンドウクリエイト</Filter>
     </ClInclude>
+    <ClInclude Include="WICTextureLoader.h">
+      <Filter>ソース ファイル\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex.h">
+      <Filter>ソース ファイル\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceCreate.h">
+      <Filter>ソース ファイル\DirectX環境構築</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PolygonDraw.hlsl">
+      <Filter>ソース ファイル</Filter>
+    </None>
+    <None Include="DirectXTex.inl">
+      <Filter>ソース ファイル\DirectXTex</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="DirectXTex.lib">
+      <Filter>ソース ファイル\DirectXTex</Filter>
+    </Library>
   </ItemGroup>
 </Project>
