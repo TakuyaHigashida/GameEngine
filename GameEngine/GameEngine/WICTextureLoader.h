@@ -124,3 +124,6 @@ namespace DirectX
         _Outptr_opt_ ID3D11Resource** texture,
         _Outptr_opt_ ID3D11ShaderResourceView** textureView);
 }
+
+
+void GetLoadImageFileSizeHW(const wchar_t* fileName, float* w, float* h);

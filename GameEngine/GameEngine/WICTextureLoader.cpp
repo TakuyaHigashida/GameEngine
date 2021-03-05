@@ -928,3 +928,27 @@ HRESULT DirectX::CreateWICTextureFromFileEx(ID3D11Device* d3dDevice,
 
     return hr;
 }
+
+
+//“ÆŽ©ŠÖ”---------------
+void GetLoadImageFileSizeHW(const wchar_t* fileName, float* w, float* h)
+{
+    IWICImagingFactory* pWIC = _GetWIC();
+
+    //Initialize WIC
+    IWICBitmapDecoder* decoder;
+    HRESULT hr = pWIC->CreateDecoderFromFilename(fileName, 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &decoder);
+
+    IWICBitmapFrameDecode* frame;
+    hr = decoder->GetFrame(0, &frame);
+
+    UINT width;
+    UINT height;
+    frame->GetSize(&width, &height);
+
+    *w = (float)width;
+    *h = (float)height;
+
+    frame->Release();
+    decoder->Release();
+}

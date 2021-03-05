@@ -27,6 +27,10 @@
 #pragma comment(lib, "d3dCompiler.lib")
 #pragma comment(lib, "dxguid.lib")
 
+//グローバル変数
+int g_mou_x = 0;		//マウスのx位置
+int g_mou_y = 0;		//マウスのy位置
+
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -56,6 +60,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 
 	//ポリゴン表示環境の初期化
 	Draw::InitPolygonRender();
+	Draw::LoadImage(0, L"heart.png");	//0番目に"heart.png"を読み込み
+	Draw::LoadImage(1, L"heart1.png");
+	Draw::LoadImage(2, L"heart2.png");
+	Draw::LoadImage(3, L"heart3.png");
 
 	//メッセージループ
 	do
@@ -73,12 +81,30 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 		
 		//ここからレンダリング開始
 		
+		static float x = 0.0f;
+
+		//Aキーが押されたとき
+		if (GetAsyncKeyState('A') & 0x8000)
+		{
+			x += 1.0f;
+		}
+		//システムキー「カーソルキー↑」が押されたとき
+		if (GetAsyncKeyState(VK_UP) & 0x8000)
+		{
+			x += 1.0f;
+		}
+		//システムキー　マウス右クリック
+		if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+		{
+			x += 1.0f;
+		}
+
 		static float time = 0.0f;
 		time += 1.0f;
-		Draw::Draw2D(100, 100, 1.0f, 1.0f, time);		//テクスチャ付き四角ポリゴン描画
-		Draw::Draw2D(300, 300);
-		Draw::Draw2D(300, 100, 1.5f, 0.5f);
-		Draw::Draw2D(400, 300,45.0f);
+		Draw::Draw2D(0, x+0, 100.0f, 1.0f, 1.0f);		//テクスチャ付き四角ポリゴン描画
+		Draw::Draw2D(1, 300, 300);
+		Draw::Draw2D(2, g_mou_x, g_mou_y, 300, 100, 1.0f, 1.0f, time);
+		Draw::Draw2D(3, 400, 300);
 
 		//レンダリング終了
 		Dev::GetSwapChain()->Present(1, 0);	//60fpsでバックバッファとプライマリバッファの交換
@@ -99,6 +125,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch(uMsg)
 	{
+		case WM_MOUSEMOVE:
+		{
+			POINT point = { LOWORD(lParam), HIWORD((lParam)) };
+
+			g_mou_x = point.x;		//カーソルのx座標
+			g_mou_y = point.y;		//カーソルのy座標
+		}
+		break;
 		case WM_KEYDOWN:	//ESCキーで終了
 			switch (wParam)
 			{

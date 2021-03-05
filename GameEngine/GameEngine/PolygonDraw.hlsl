@@ -23,6 +23,7 @@ cbuffer global
 	float4 pos;
 	float4 scale;
 	float4 rotation;
+	float4 texsize;
 };
 
 //テクスチャ情報
@@ -44,21 +45,21 @@ vertexOut vs(vertexIn IN)
 	p.y = IN.pos.y - 0.5f;
 
 	//拡大率(INのPolygonの頂点座標に拡大率を乗算)
-	p.x = p.x * scale.x;
-	p.y = p.y * scale.y;
+	p.x = p.x * scale.x * texsize.x / 400.0f;
+	p.y = p.y * scale.y * texsize.y / 300.0f;
 
 	//ポリゴンを原点を中心に回転
 	float r = 3.14f / 180.0f * rotation.x;
-	OUT.pos.x = p.x * cos(r) - p.y * sin(r);
-	OUT.pos.y = p.y * cos(r) + p.x * sin(r);
+	OUT.pos.x = p.x * cos(r) - p.y * sin(r)*3.0f/4.0f;
+	OUT.pos.y = p.y * cos(r) + p.x * sin(r)*4.0f/3.0f;
 
 	//ポリゴンをもとの位置に回転させる(拡大部分を考慮)
-	OUT.pos.x += 0.5f * scale.x;
-	OUT.pos.y += 0.5f * scale.y;
+	OUT.pos.x += 0.5f * scale.x * texsize.x / 400.0f;
+	OUT.pos.y += 0.5f * scale.y * texsize.y / 300.0f;
 
 	//2D座標への変換
-	OUT.pos.x = +(OUT.pos.x * (256.0f / 400.0f)) - 1.0f ;
-	OUT.pos.y = -(OUT.pos.y * (256.0f / 300.0f)) + 1.0f ;
+	OUT.pos.x = +(OUT.pos.x * (texsize.x / 400.0f)) - 1.0f ;
+	OUT.pos.y = -(OUT.pos.y * (texsize.y / 300.0f)) + 1.0f ;
 
 	//平行移動
 	OUT.pos.x += ( pos.x / 400.0f);
