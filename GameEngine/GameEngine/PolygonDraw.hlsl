@@ -20,6 +20,9 @@ struct vertexOut
 cbuffer global
 {
 	float4 color;
+	float4 pos;
+	float4 scale;
+	float4 rotation;
 };
 
 //テクスチャ情報
@@ -29,13 +32,40 @@ SamplerState	samLinear : register(s0);	//テクスチャサンプラ
 //頂点シェーダ
 //引数　vertexIn : CPUから受け取る頂点情報
 //戻り値 vertexOut : PSに送る情報
-//頂点情報を座標変換させるが今回は変換させていない。
+//頂点位置には、(テクスチャサイズ/ウインドウサイズ)で％を求め乗算
+//残りは、CPUから受け取ったデータをそのまま流している
 vertexOut vs(vertexIn IN)
 {
 	vertexOut OUT;
+	float2 p;
+
+	//原点にポリゴンの中心を移動させる
+	p.x = IN.pos.x - 0.5f;
+	p.y = IN.pos.y - 0.5f;
+
+	//拡大率(INのPolygonの頂点座標に拡大率を乗算)
+	p.x = p.x * scale.x;
+	p.y = p.y * scale.y;
+
+	//ポリゴンを原点を中心に回転
+	float r = 3.14f / 180.0f * rotation.x;
+	OUT.pos.x = p.x * cos(r) - p.y * sin(r);
+	OUT.pos.y = p.y * cos(r) + p.x * sin(r);
+
+	//ポリゴンをもとの位置に回転させる(拡大部分を考慮)
+	OUT.pos.x += 0.5f * scale.x;
+	OUT.pos.y += 0.5f * scale.y;
+
+	//2D座標への変換
+	OUT.pos.x = +(OUT.pos.x * (256.0f / 400.0f)) - 1.0f ;
+	OUT.pos.y = -(OUT.pos.y * (256.0f / 300.0f)) + 1.0f ;
+
+	//平行移動
+	OUT.pos.x += ( pos.x / 400.0f);
+	OUT.pos.y += (-pos.y / 300.0f);
 
 	//INからOUTへそのまま渡す
-	OUT.pos = IN.pos;	//頂点
+	OUT.pos.zw = IN.pos.zw;	//頂点
 	OUT.col = IN.col;	//色
 	OUT.uv	= IN.uv;	//UV
 	
@@ -54,6 +84,7 @@ float4 ps(vertexOut IN) : SV_Target
 
 	//colにテクスチャの色合成
 	col *= tex;
+	//col.a = 1.0f;
 
 	return col;
 }
