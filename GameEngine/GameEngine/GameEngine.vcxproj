@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="DeviceCreate.cpp" />
     <ClCompile Include="Draw2DPolygon.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowCreate.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="DeviceCreate.h" />
     <ClInclude Include="DirectXTex.h" />
     <ClInclude Include="Draw2DPolygon.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="WindowCreate.h" />
   </ItemGroup>
