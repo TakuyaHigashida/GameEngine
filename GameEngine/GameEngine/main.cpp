@@ -67,6 +67,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	//オーディオ作成
 	Audio::InitAudio();
 
+	//ミュージック情報取得
+	Audio::LoadBackMusic(L"maru.wav");
+	Audio::StartLoopMusic();
+
 	//DirectX Deviceの初期化
 	CDeviceCreate::InitDevice(CWindowCreate::GethWnd(), 800, 600);
 

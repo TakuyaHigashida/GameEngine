@@ -6,24 +6,41 @@ ChunkInfo				CAudio::m_DataChunk;		//サウンド情報
 unsigned char*			CAudio::m_pResourceData;	//サウンドファイル情報を持つポインタ
 IXAudio2SourceVoice*	CAudio::m_pSourceVoice;		//サウンドボイスインターフェース
 IXAudio2SubmixVoice*	CAudio::m_pSFXSubmixVoice;	//サブミクスインターフェース
+ChunkInfo				CAudio::m_SEDataChunk[32];		//SE用のサウンド情報
+unsigned char*			CAudio::m_pSEResourceData[32];	//SE用のサウンドファイル情報を持つポインタ
+IXAudio2SourceVoice*	CAudio::m_pSESourceVoice[32];	//SE用のサウンドボイスインターフェース
 
-void CAudio::InitAudio()
+//ループ用の音楽停止
+void CAudio::StopLoopMusic()
 {
-	unsigned XAudio2CreateFlags = 0;
+	m_pSourceVoice->Stop();					//音楽停止
+	m_pSourceVoice->FlushSourceBuffers();	//サウンドボイス保留中バッファ破棄
+}
 
-	//XAudio2インターフェース作成
-	XAudio2Create(&m_pXAudio2, XAudio2CreateFlags);
+//ループ用の音楽再生
+void CAudio::StartLoopMusic()
+{
+	//サウンドバッファにLoadBackMusicで読み込んだ波形情報をLoop用で設定
+	XAUDIO2_BUFFER SoundBuffer = { 0 };
+	SoundBuffer.AudioBytes = m_DataChunk.Size;
+	SoundBuffer.pAudioData = reinterpret_cast<BYTE*>(m_DataChunk.pData);
+	SoundBuffer.LoopCount = XAUDIO2_LOOP_INFINITE;	//ループ設定
+	SoundBuffer.Flags = XAUDIO2_END_OF_STREAM;
 
-	//マスターボイス作成
-	m_pXAudio2->CreateMasteringVoice(&m_pMasteringVoice);
+	//サウンドバッファをセット
+	m_pSourceVoice->SubmitSourceBuffer(&SoundBuffer);
 
-	//ミックスボイス作成
-	m_pXAudio2->CreateSubmixVoice(&m_pSFXSubmixVoice, 1, 44100, 0, 0, 0, 0);
+	//サウンドスタート
+	m_pSourceVoice->Start();
+}
 
+//ループ用音楽の読み込み
+void CAudio::LoadBackMusic(const wchar_t* name)
+{
 	//waveファイルオープン
 	FILE* fp;
-	const wchar_t* FILENAME = L"maru.wav";
-	_wfopen_s(&fp, FILENAME, L"rb");
+	errno_t error;
+	error = _wfopen_s(&fp, name, L"rb");
 
 	//ファイルサイズを取得
 	unsigned Size = 0;
@@ -74,6 +91,24 @@ void CAudio::InitAudio()
 
 	m_pSourceVoice->SubmitSourceBuffer(&SoundBuffer);
 	m_pSourceVoice->Start();
+}
+
+
+void CAudio::InitAudio()
+{
+	unsigned XAudio2CreateFlags = 0;
+
+	//XAudio2インターフェース作成
+	XAudio2Create(&m_pXAudio2, XAudio2CreateFlags);
+
+	//マスターボイス作成
+	m_pXAudio2->CreateMasteringVoice(&m_pMasteringVoice);
+
+	//ミックスボイス作成
+	m_pXAudio2->CreateSubmixVoice(&m_pSFXSubmixVoice, 1, 44100, 0, 0, 0, 0);
+
+	//サウンドボイス初期化
+	m_pSourceVoice = nullptr;
 }
 
 void CAudio::DeleteAudio()
