@@ -69,7 +69,12 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 
 	//ミュージック情報取得
 	Audio::LoadBackMusic(L"maru.wav");
+	Audio::LoadSEMusic(0, L"GetSE.wav");
+	Audio::LoadSEMusic(1, L"maru.wav");
+
 	Audio::StartLoopMusic();
+	Audio::StartMusic(0);
+	Audio::MasterVolume(0.5);
 
 	//DirectX Deviceの初期化
 	CDeviceCreate::InitDevice(CWindowCreate::GethWnd(), 800, 600);
@@ -101,6 +106,73 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 		//ここからレンダリング開始
 		static float x = 0.0f;
 
+		static bool IsKeyOn = true;
+		//ミュージックチェック用
+		if (Input::KeyPush('Z') == true)
+		{
+			if (IsKeyOn == true)
+			{
+				IsKeyOn = false;
+				Audio::StartMusic(0);
+			}
+			else
+			{
+				IsKeyOn = true;
+			}
+		}
+
+		static bool IsKeyOn0 = true;
+		//ミュージックチェック用
+		if (Input::KeyPush('Q') == true)
+		{
+			if (IsKeyOn0 == true)
+			{
+				IsKeyOn0 = false;
+				Audio::StartMusic(1);
+			}
+			else
+			{
+				IsKeyOn0 = true;
+			}
+		}
+
+		//ループミュージックボリューム
+		static float t = 0.0f;
+		if (Input::KeyPush('X'))
+		{
+			t += 0.1f;
+			Audio::LoopMusicVolume(t);
+		}
+		if (Input::KeyPush('C'))
+		{
+			t -= 0.1f;
+			Audio::LoopMusicVolume(t);
+		}
+		//効果音ID=0
+		static float t1 = 0.0f;
+		if (Input::KeyPush('S'))
+		{
+			t1 += 0.1f;
+			Audio::SEMusicVolume(0, t1);
+		}
+		if (Input::KeyPush('D'))
+		{
+			t1 -= 0.1f;
+			Audio::SEMusicVolume(0, t1);
+		}
+		//効果音ID=0
+		static float t2 = 0.0f;
+		if (Input::KeyPush('W'))
+		{
+			t2 += 0.1f;
+			Audio::SEMusicVolume(0, t2);
+		}
+		if (Input::KeyPush('E'))
+		{
+			t2 -= 0.1f;
+			Audio::SEMusicVolume(0, t2);
+		}
+
 		//Aキーが押されたとき
 		if (Input::KeyPush('A') ==true)
 		{
@@ -112,7 +184,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 			x += 1.0f;
 		}
 		//システムキー　マウス右クリック
-		if (Input::KeyPush(VK_RBUTTON) == true);
+		if (Input::KeyPush(VK_RBUTTON) == true)
 		{
 			x += 1.0f;
 		}
