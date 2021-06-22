@@ -77,6 +77,21 @@
     <ClInclude Include="Audio.h">
       <Filter>ソース ファイル\オーディオ</Filter>
     </ClInclude>
+    <ClInclude Include="ogg\ogg.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ogg\os_types.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="vorbis\codec.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="vorbis\vorbisfile.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="vorbis\vorbisenc.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PolygonDraw.hlsl">
@@ -85,10 +100,18 @@
     <None Include="DirectXTex.inl">
       <Filter>ソース ファイル\DirectXTex</Filter>
     </None>
+    <None Include="ogg\Makefile.in" />
+    <None Include="ogg\Makefile.am" />
+    <None Include="ogg\config_types.h.in" />
+    <None Include="vorbis\Makefile.am" />
+    <None Include="vorbis\Makefile.in" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="DirectXTex.lib">
       <Filter>ソース ファイル\DirectXTex</Filter>
     </Library>
+    <Library Include="libogg.lib" />
+    <Library Include="libvorbis_static.lib" />
+    <Library Include="libvorbisfile_static.lib" />
   </ItemGroup>
 </Project>

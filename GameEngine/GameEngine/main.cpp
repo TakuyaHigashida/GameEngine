@@ -68,9 +68,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	Audio::InitAudio();
 
 	//ミュージック情報取得
-	Audio::LoadBackMusic(L"maru.wav");
+	//Audio::LoadBackMusic(L"maru.wav");
 	Audio::LoadSEMusic(0, L"GetSE.wav");
 	Audio::LoadSEMusic(1, L"maru.wav");
+	Audio::LoadBackMusic("Test.ogg");
 
 	Audio::StartLoopMusic();
 	Audio::StartMusic(0);
