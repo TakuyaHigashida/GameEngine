@@ -153,19 +153,32 @@
     <ClInclude Include="DirectXTex.h" />
     <ClInclude Include="Draw2DPolygon.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ogg\ogg.h" />
+    <ClInclude Include="ogg\os_types.h" />
+    <ClInclude Include="vorbis\codec.h" />
+    <ClInclude Include="vorbis\vorbisenc.h" />
+    <ClInclude Include="vorbis\vorbisfile.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="WindowCreate.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DirectXTex.inl" />
+    <None Include="ogg\config_types.h.in" />
+    <None Include="ogg\Makefile.am" />
+    <None Include="ogg\Makefile.in" />
     <None Include="PolygonDraw.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <FileType>Document</FileType>
     </None>
+    <None Include="vorbis\Makefile.am" />
+    <None Include="vorbis\Makefile.in" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="DirectXTex.lib" />
+    <Library Include="libogg.lib" />
+    <Library Include="libvorbisfile_static.lib" />
+    <Library Include="libvorbis_static.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

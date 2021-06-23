@@ -26,8 +26,13 @@ typedef class CAudio
 		static void SEMusicVolume(int id, float t);	//SE用ミュージックのボリューム調整
 		static void MasterVolume(float t);		//マスターボリューム調整
 
+		//Wave用
 		static void LoadBackMusic(const wchar_t* name);	//ループ用音楽の読み込み
 		static void LoadSEMusic(int id, const wchar_t* name);	//SE用音楽の読み込み
+
+		//Ogg用
+		static void LoadBackMusic(const char* name);			//ループ用音楽の読み込み
+		static void LoadSEMusic(int id, const char* name);	//SE用音楽の読み込み
 
 		static void StartLoopMusic();					//ループ用の音楽再生
 		static void StopLoopMusic();					//ループ用の音楽停止
@@ -36,6 +41,7 @@ typedef class CAudio
 
 	private:
 		static unsigned char* LoadWave(ChunkInfo* p_chunk_info, WAVEFORMATEX* p_wave, const wchar_t* name);	//Wave読み込み
+		static unsigned char* LoadOgg(ChunkInfo* p_chunk_info, WAVEFORMATEX* p_wave, const char* name);	//Ogg読み込み
 
 		static WORD GetWord(const unsigned char* pData);
 		static DWORD GetDword(const unsigned char* pData);
