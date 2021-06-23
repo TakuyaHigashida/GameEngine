@@ -12,6 +12,10 @@
 #include "Draw2DPolygon.h"
 #include "Input.h"
 #include "Audio.h"
+#include "TaskSystem.h"
+
+//デバッグ用オブジェクトヘッダー
+#include"Hero.h"
 
 //削除されていないメモリを出力にダンプする
 #include <crtdbg.h>
@@ -61,34 +65,32 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	//ウィンドウクラス作成
 	RegisterClassEx(&wcex);
 
-	//ウィンドウ作成
-	CWindowCreate::NewWindow(800, 600, name, hInstance);
+	//各ゲームシステム初期化
+	CWindowCreate::NewWindow(800, 600, name, hInstance);	//ウィンドウ作成
+	CDeviceCreate::InitDevice(CWindowCreate::GethWnd(), 800, 600);	//DirectX Deviceの初期化
+	Audio::InitAudio();	//オーディオ作成
+	Input::InitInput();	//入力用のクラス初期化
+	Draw::InitPolygonRender();	//ポリゴン表示環境の初期化
+	TaskSystem::InitTaskSystem();	//タスクシステムの初期化
 
-	//オーディオ作成
-	Audio::InitAudio();
-
+	//リソース読み込み
+	
 	//ミュージック情報取得
 	//Audio::LoadBackMusic(L"maru.wav");
-	Audio::LoadSEMusic(0, L"GetSE.wav");
-	Audio::LoadSEMusic(1, L"maru.wav");
+	//Audio::LoadSEMusic(0, L"GetSE.wav");
+	//Audio::LoadSEMusic(1, L"maru.wav");
 	Audio::LoadBackMusic("Test.ogg");
-
 	Audio::StartLoopMusic();
-	Audio::StartMusic(0);
-	Audio::MasterVolume(0.5);
 
-	//DirectX Deviceの初期化
-	CDeviceCreate::InitDevice(CWindowCreate::GethWnd(), 800, 600);
-
-	//ポリゴン表示環境の初期化
-	Draw::InitPolygonRender();
+	//イメージ読み込み
 	Draw::LoadImage(0, L"heart.png");	//0番目に"heart.png"を読み込み
 	Draw::LoadImage(1, L"heart1.png");
 	Draw::LoadImage(2, L"heart2.png");
 	Draw::LoadImage(3, L"heart3.png");
 
-	//入力用のクラス初期化
-	Input::InitInput();
+	//デバッグ用オブジェクト作成
+	CHero* hero = new CHero();
+	TaskSystem::InsertObj(hero);
 
 	//メッセージループ
 	do
@@ -201,6 +203,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 		Dev::GetSwapChain()->Present(1, 0);	//60fpsでバックバッファとプライマリバッファの交換
 
 	} while (msg.message != WM_QUIT);
+
+	TaskSystem::DeleteTaskSystem();
 
 	Draw::DeletePolygonRender();	//ポリゴン表示環境の破棄
 

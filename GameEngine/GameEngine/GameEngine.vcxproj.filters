@@ -31,6 +31,12 @@
     <Filter Include="ソース ファイル\オーディオ">
       <UniqueIdentifier>{0a061940-ca6f-43ba-af89-2094e351e7e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\タスクシステム">
+      <UniqueIdentifier>{f7be245b-b1fb-4799-821d-80d4669e1af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Debug用オブジェクト">
+      <UniqueIdentifier>{b0d06382-5ed3-49d1-828c-713e0086e494}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>ソース ファイル\オーディオ</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskSystem.cpp">
+      <Filter>ソース ファイル\タスクシステム</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>ソース ファイル\Debug用オブジェクト</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="vorbis\vorbisenc.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskSystem.h">
+      <Filter>ソース ファイル\タスクシステム</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>ソース ファイル\Debug用オブジェクト</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

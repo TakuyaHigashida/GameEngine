@@ -142,8 +142,10 @@
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="DeviceCreate.cpp" />
     <ClCompile Include="Draw2DPolygon.cpp" />
+    <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TaskSystem.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowCreate.cpp" />
   </ItemGroup>
@@ -152,9 +154,11 @@
     <ClInclude Include="DeviceCreate.h" />
     <ClInclude Include="DirectXTex.h" />
     <ClInclude Include="Draw2DPolygon.h" />
+    <ClInclude Include="Hero.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="ogg\ogg.h" />
     <ClInclude Include="ogg\os_types.h" />
+    <ClInclude Include="TaskSystem.h" />
     <ClInclude Include="vorbis\codec.h" />
     <ClInclude Include="vorbis\vorbisenc.h" />
     <ClInclude Include="vorbis\vorbisfile.h" />
