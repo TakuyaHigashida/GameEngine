@@ -29,6 +29,22 @@ void CTaskSystem::InsertObj(CObj* obj)
 //リスト内のアクション実行
 void CTaskSystem::ListAction()
 {
+	//リスト内のis_deleteフラグがtrueの要素を削除
+	auto i = m_task_list->begin();
+	while (i != m_task_list->end())
+	{
+		if (i->get()->is_delete == true)
+		{
+			//イテレーターの要素を削除
+			i = m_task_list->erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+
+
 	//リスト内の先端から末端まで
 	for (auto ip = m_task_list->begin(); ip != m_task_list->end(); ip++)
 	{
@@ -40,5 +56,10 @@ void CTaskSystem::ListAction()
 //リスト内のドロー実行
 void CTaskSystem::ListDraw()
 {
-
+	//リスト内の先端から末端まで
+	for (auto ip = m_task_list->begin(); ip != m_task_list->end(); ip++)
+	{
+		//リスト内のオブジェクトが持つドローメソッドを実行
+		ip->get()->Draw();
+	}
 }

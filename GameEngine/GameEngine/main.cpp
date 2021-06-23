@@ -13,6 +13,7 @@
 #include "Input.h"
 #include "Audio.h"
 #include "TaskSystem.h"
+#include "FontTex.h"
 
 //デバッグ用オブジェクトヘッダー
 #include"Hero.h"
@@ -72,6 +73,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	Input::InitInput();	//入力用のクラス初期化
 	Draw::InitPolygonRender();	//ポリゴン表示環境の初期化
 	TaskSystem::InitTaskSystem();	//タスクシステムの初期化
+	Font::InitFontTex();			//フォントの初期化
 
 	//リソース読み込み
 	
@@ -91,6 +93,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	//デバッグ用オブジェクト作成
 	CHero* hero = new CHero();
 	TaskSystem::InsertObj(hero);
+	hero = new CHero();
+	TaskSystem::InsertObj(hero);
+	hero = new CHero();
+	TaskSystem::InsertObj(hero);
 
 	//メッセージループ
 	do
@@ -100,6 +106,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
+		//リスト内のアクション実行
+		TaskSystem::ListAction();
+
 		//レンダリングターゲットセットとレンダリング画面クリア
 		float color[] = { 0.0f, 0.25f, 0.45f, 1.0f };
 		Dev::GetDeviceContext()->OMSetRenderTargets(1, Dev::GetppRTV(), NULL);		//レンダリング先をカラーバッファ(バックバッファ)にセット
@@ -107,110 +117,21 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 		Dev::GetDeviceContext()->RSSetState(Dev::GetRS());						//ラスタライズをセット
 		
 		//ここからレンダリング開始
-		static float x = 0.0f;
-
-		static bool IsKeyOn = true;
-		//ミュージックチェック用
-		if (Input::KeyPush('Z') == true)
-		{
-			if (IsKeyOn == true)
-			{
-				IsKeyOn = false;
-				Audio::StartMusic(0);
-			}
-			else
-			{
-				IsKeyOn = true;
-			}
-		}
-
-		static bool IsKeyOn0 = true;
-		//ミュージックチェック用
-		if (Input::KeyPush('Q') == true)
-		{
-			if (IsKeyOn0 == true)
-			{
-				IsKeyOn0 = false;
-				Audio::StartMusic(1);
-			}
-			else
-			{
-				IsKeyOn0 = true;
-			}
-		}
-
-		//ループミュージックボリューム
-		static float t = 0.0f;
-		if (Input::KeyPush('X'))
-		{
-			t += 0.1f;
-			Audio::LoopMusicVolume(t);
-		}
-		if (Input::KeyPush('C'))
-		{
-			t -= 0.1f;
-			Audio::LoopMusicVolume(t);
-		}
-		//効果音ID=0
-		static float t1 = 0.0f;
-		if (Input::KeyPush('S'))
-		{
-			t1 += 0.1f;
-			Audio::SEMusicVolume(0, t1);
-		}
-		if (Input::KeyPush('D'))
-		{
-			t1 -= 0.1f;
-			Audio::SEMusicVolume(0, t1);
-		}
-		//効果音ID=0
-		static float t2 = 0.0f;
-		if (Input::KeyPush('W'))
-		{
-			t2 += 0.1f;
-			Audio::SEMusicVolume(0, t2);
-		}
-		if (Input::KeyPush('E'))
-		{
-			t2 -= 0.1f;
-			Audio::SEMusicVolume(0, t2);
-		}
-
-		//Aキーが押されたとき
-		if (Input::KeyPush('A') ==true)
-		{
-			x += 1.0f;
-		}
-		//システムキー「カーソルキー↑」が押されたとき
-		if (Input::KeyPush(VK_UP) == true)
-		{
-			x += 1.0f;
-		}
-		//システムキー　マウス右クリック
-		if (Input::KeyPush(VK_RBUTTON) == true)
-		{
-			x += 1.0f;
-		}
-
-		static float time = 0.0f;
-		time += 1.0f;
-		Draw::Draw2D(0, x+0, 100.0f, 1.0f, 1.0f);		//テクスチャ付き四角ポリゴン描画
-		Draw::Draw2D(1, 300, 300);
-		Draw::Draw2D(2, Input::GetMouX(), Input::GetMouY(), 300, 100, 1.0f, 1.0f, time);
-		Draw::Draw2D(3, 400, 300);
+		
+		TaskSystem::ListAction();	//リスト内のアクション実行
+		TaskSystem::ListDraw();		//リスト内のドロー実行
 
 		//レンダリング終了
 		Dev::GetSwapChain()->Present(1, 0);	//60fpsでバックバッファとプライマリバッファの交換
 
 	} while (msg.message != WM_QUIT);
 
-	TaskSystem::DeleteTaskSystem();
-
+	//ゲームシステム破棄
+	TaskSystem::DeleteTaskSystem();	//タスクシステムの破棄
 	Draw::DeletePolygonRender();	//ポリゴン表示環境の破棄
-
 	CDeviceCreate::ShutDown();	//DirectXの環境破棄
-
 	Audio::DeleteAudio();				//オーディオ環境の破棄
+	Font::DeleteFontTex();		//フォントの破棄
 
 	CoUninitialize();
 

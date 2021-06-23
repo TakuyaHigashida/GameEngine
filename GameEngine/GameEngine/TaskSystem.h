@@ -11,10 +11,15 @@ using namespace std;
 class CObj
 {
 	public:
-		CObj() {};
+		CObj() 
+		{
+			is_delete = false;
+		};
 		virtual ~CObj() {};
 		virtual void Action()=0;
 		virtual void Draw()=0;
+
+		bool is_delete;		//削除フラグ
 };
 
 //タスクシステム

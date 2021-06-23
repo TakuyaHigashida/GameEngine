@@ -142,6 +142,7 @@
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="DeviceCreate.cpp" />
     <ClCompile Include="Draw2DPolygon.cpp" />
+    <ClCompile Include="FontTex.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="DeviceCreate.h" />
     <ClInclude Include="DirectXTex.h" />
     <ClInclude Include="Draw2DPolygon.h" />
+    <ClInclude Include="FontTex.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="ogg\ogg.h" />

@@ -37,6 +37,9 @@
     <Filter Include="ソース ファイル\Debug用オブジェクト">
       <UniqueIdentifier>{b0d06382-5ed3-49d1-828c-713e0086e494}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\文字描画">
+      <UniqueIdentifier>{bfd554d2-74b5-4aad-bab3-cb167b3095ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="Hero.cpp">
       <Filter>ソース ファイル\Debug用オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="FontTex.cpp">
+      <Filter>ソース ファイル\文字描画</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="Hero.h">
       <Filter>ソース ファイル\Debug用オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="FontTex.h">
+      <Filter>ソース ファイル\文字描画</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
