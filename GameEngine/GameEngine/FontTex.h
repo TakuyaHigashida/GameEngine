@@ -29,7 +29,10 @@ class CCherClass
 			SAFE_RELEASE(m_pTexture);
 		}
 
-		void CreateCharTex(wchar_t c, HDC hdc, TEXTMETRIC TM);		//文字テクスチャ作成
+		const wchar_t* GetChar() { return m_pc.get(); }		//登録してる文字を返す
+
+		void CreateCharTex(const wchar_t c, HDC hdc, TEXTMETRIC TM);		//文字テクスチャ作成
+		ID3D11ShaderResourceView* GetTexResView() { return m_pTexResView; }	//文字のリソースビュー
 
 	private:
 		unique_ptr<wchar_t> m_pc;					//識別用文字
@@ -46,6 +49,9 @@ typedef class CFontTex
 
 		static void InitFontTex();
 		static void DeleteFontTex();
+
+		static void CreateStrTex(const wchar_t* str);	//文字列を基に文字テクスチャ作成
+		static void StrDraw(const wchar_t* str, float x, float y, float s, float r, float g, float b, float a);	//文字描画用
 
 	private:
 		//フォント作成に必要な変数

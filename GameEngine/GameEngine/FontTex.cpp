@@ -9,7 +9,7 @@ list<unique_ptr<CCherClass>>*CFontTex::list_char_tex;	//文字リスト
 //---------CChearClass--------------
 
 //文字テクスチャ作成メソッド
-void CCherClass::CreateCharTex(wchar_t c, HDC hdc, TEXTMETRIC TM)
+void CCherClass::CreateCharTex(const wchar_t c, HDC hdc, TEXTMETRIC TM)
 {
 	//識別文字用
 	UINT code = 0;	//作成する文字コード
@@ -75,15 +75,15 @@ void CCherClass::CreateCharTex(wchar_t c, HDC hdc, TEXTMETRIC TM)
 	int iBmp_h = GM.gmBlackBoxY;				//iBmp_w, iBmp_h：フォントビットマップの幅高
 	int Level = 17;								//Level:α値の段階(GGO_GRAY4_BITMAPなので17段階)
 	DWORD Alpha, Color;
-	//1ピクセル単位にフォントの色情報(24bit)をテクスチャに描き込み
-	FillMemory(pBits, sizeof(pBits), 0);
+	//1ピクセル単位にフォントの色情報(32bit)をテクスチャに描き込み
+	memset(pBits, 0x00, sizeof(DWORD)* 32 * 32);
 	for (int y = iOfs_y; y < iOfs_y + iBmp_h; y++)
 	{
 		for (unsigned int x = iOfs_x; x < iOfs_x + GM.gmBlackBoxX; x++)
 		{
 			Alpha = (255 * ptr[x - iOfs_x + iBmp_w * (y - iOfs_y)]) / (Level - 1);
 			Color = 0x00ffffff | (Alpha < 24);
-			memcpy((BYTE*)pBits + (y << 8) + (x << 2), & Color, sizeof(DWORD));
+			memcpy((BYTE*)pBits + (y << 7) + (x << 2), & Color, sizeof(DWORD));
 		}
 	}
 
@@ -94,11 +94,64 @@ void CCherClass::CreateCharTex(wchar_t c, HDC hdc, TEXTMETRIC TM)
 	delete[] ptr;
 }
 
+//-----CFontTex---------
+//文字描画
+void CFontTex::StrDraw(const wchar_t* str, float x, float y, float s, float r, float g, float b, float a)
+{
+	//文字列を登録
+	CreateStrTex(str);
+
+	//描画
+	float c[] = { r, g, b, a };
+	for (unsigned int i = 0; i < wcslen(str); i++)
+	{
+		for (auto itr = list_char_tex->begin(); itr != list_char_tex->end(); itr++)
+		{
+			if (*itr->get()->GetChar() == str[i])
+			{
+				Draw::Draw2DChar(itr->get()->GetTexResView(), x+(32*s*i), y, s, c);
+				break;
+			}
+		}
+	}
+}
+
+//文字列を基に文字テクスチャ作成
+void CFontTex::CreateStrTex(const wchar_t* str)
+{
+	//文字列を文字をlistに登録済みかチェック
+	for (unsigned int i = 0; i < wcslen(str); i++)
+	{
+		bool is_char_entry = false;
+
+		//リストから検索
+		for (auto itr = list_char_tex->begin(); itr != list_char_tex->end(); itr++)
+		{
+			//登録された文字とstrの文字を比較
+			if (*itr->get()->GetChar()==str[i])
+			{
+				//登録されている
+				is_char_entry = true;
+			}
+		}
+		//なければCreateCharTex作成する
+		if (is_char_entry == false)
+		{
+			//文字テクスチャ作成
+			unique_ptr<CCherClass> obj(new CCherClass());
+			obj->CreateCharTex(str[i], m_hdc, m_TM);
+
+			//リストに譲渡
+			list_char_tex->push_back(move(obj));
+		}
+	}
+}
+
 //初期化メソッド
 void CFontTex::InitFontTex()
 {
 	//リスト初期化
-	list_char_tex.clear();
+	list_char_tex = new list<unique_ptr<CCherClass>>;
 
 	//第一引数のカテゴリに第二引数の国別コードを与える
 	//この場合Unicodeの文字を日本語コードするとなる
@@ -136,7 +189,8 @@ void CFontTex::InitFontTex()
 void CFontTex::DeleteFontTex()
 {
 	//リスト破棄
-	list_char_tex.clear();
+	list_char_tex->clear();
+	delete list_char_tex;
 
 	//これらGDIオブジェクトを破棄
 	DeleteObject(m_oldFont);

@@ -40,6 +40,8 @@ typedef class CDraw2DPolygon
 		static void Draw2D(int id, float x, float y, int mx, int my, float sx, float sy)	{ Draw2D(id, x, y, mx, my, sx, sy, 0.0f); }
 		static void Draw2D(int id, float x, float y, int mx, int my, float sx, float sy ,float r);			//•`‰æ
 
+		static void Draw2DChar(ID3D11ShaderResourceView* resurec_view, float x, float y, float s, float rgba[4]);		//•¶š•`‰æ—p
+
 		static HRESULT InitPolygonRender();	//ƒ|ƒŠƒSƒ“•\¦ŠÂ‹«‚Ì‰Šú‰»
 		static void DeletePolygonRender();	//ƒ|ƒŠƒSƒ“•\¦ŠÂ‹«‚Ì”jŠü
 

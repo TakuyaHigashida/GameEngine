@@ -120,6 +120,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 		
 		TaskSystem::ListAction();	//リスト内のアクション実行
 		TaskSystem::ListDraw();		//リスト内のドロー実行
+		Font::StrDraw(L"あいうえお", 100.0f, 100.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
 		//レンダリング終了
 		Dev::GetSwapChain()->Present(1, 0);	//60fpsでバックバッファとプライマリバッファの交換
