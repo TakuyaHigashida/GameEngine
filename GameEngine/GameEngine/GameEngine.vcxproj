@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DeviceCreate.cpp" />
     <ClCompile Include="Draw2DPolygon.cpp" />
     <ClCompile Include="FontTex.cpp" />
@@ -152,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="DeviceCreate.h" />
     <ClInclude Include="DirectXTex.h" />
     <ClInclude Include="Draw2DPolygon.h" />

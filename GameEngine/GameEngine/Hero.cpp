@@ -4,10 +4,13 @@ CHero::CHero()
 {
 	//ランダムで初期配置を決める
 	m_x = rand() % 300 + 100;
-	m_y== rand() % 300 + 100;
+	m_y = rand() % 300 + 100;
 	//初期移動方向
 	m_vx = 1.0f;
 	m_vy = 1.0f;
+
+	//ヒットボックス作成
+	m_p_hit_box = Collision::HitBoxInsert(this);
 }
 
 CHero::~CHero()

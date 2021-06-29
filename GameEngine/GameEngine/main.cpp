@@ -14,6 +14,7 @@
 #include "Audio.h"
 #include "TaskSystem.h"
 #include "FontTex.h"
+#include "Collision.h"
 
 //デバッグ用オブジェクトヘッダー
 #include"Hero.h"
@@ -74,6 +75,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	Draw::InitPolygonRender();	//ポリゴン表示環境の初期化
 	TaskSystem::InitTaskSystem();	//タスクシステムの初期化
 	Font::InitFontTex();			//フォントの初期化
+	Collision::InitHitBox();		//コリジョンの初期化
 
 	//リソース読み込み
 	
@@ -128,11 +130,13 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	} while (msg.message != WM_QUIT);
 
 	//ゲームシステム破棄
+	Collision::DeleteHitBox();		//コリジョンの破棄
 	TaskSystem::DeleteTaskSystem();	//タスクシステムの破棄
 	Draw::DeletePolygonRender();	//ポリゴン表示環境の破棄
 	CDeviceCreate::ShutDown();	//DirectXの環境破棄
 	Audio::DeleteAudio();				//オーディオ環境の破棄
 	Font::DeleteFontTex();		//フォントの破棄
+
 
 	CoUninitialize();
 

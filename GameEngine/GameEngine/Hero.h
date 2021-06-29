@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Audio.h"
 #include "TaskSystem.h"
+#include"Collision.h"
 
 //主人公クラス
 class CHero :public CObj
@@ -19,4 +20,6 @@ class CHero :public CObj
 		float m_y;
 		float m_vx;	//移動ベクトル
 		float m_vy;
+
+		HitBox* m_p_hit_box;		//当たり判定
 };

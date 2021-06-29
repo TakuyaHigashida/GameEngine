@@ -40,6 +40,9 @@
     <Filter Include="ソース ファイル\文字描画">
       <UniqueIdentifier>{bfd554d2-74b5-4aad-bab3-cb167b3095ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\当たり判定">
+      <UniqueIdentifier>{25f8a811-c28a-43dd-91f4-1317ced82d50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="FontTex.cpp">
       <Filter>ソース ファイル\文字描画</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>ソース ファイル\当たり判定</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="FontTex.h">
       <Filter>ソース ファイル\文字描画</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>ソース ファイル\当たり判定</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
