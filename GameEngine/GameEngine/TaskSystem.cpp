@@ -1,3 +1,7 @@
+//STLデバッグ機能をOFFにする
+#define _SECURE_SCL (0)
+#define _HAS_ITERATOR_DEBUGGING (0)
+
 #include "TaskSystem.h"
 
 //リスト　CObjを持つオブジェクト
@@ -13,6 +17,28 @@ void CTaskSystem::DeleteTaskSystem()
 {
 	//リスト破棄
 	delete m_task_list;
+}
+
+//リスト内のオブジェクトをプライオリティ順にソート
+void CTaskSystem::SotrPriority()
+{
+	//ソート比較クラス
+	class Pr
+	{
+		public:
+			bool operator()(const shared_ptr<CObj> x, const shared_ptr<CObj> y) const
+			{
+				//比較する要素と内容を決める
+				return x.get()->m_priority < y.get()->m_priority;
+			}
+	}pr;
+
+	//要素が2以上ないとソートはエラーする
+	if (m_task_list->size() >= 2)
+	{
+		//リストを比較クラスを元にソート実行
+		m_task_list->sort(pr);
+	}
 }
 
 //追加

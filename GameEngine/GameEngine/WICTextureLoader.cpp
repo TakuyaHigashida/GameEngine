@@ -21,6 +21,10 @@
 // http://go.microsoft.com/fwlink/?LinkId=248929
 //--------------------------------------------------------------------------------------
 
+//STLデバッグ機能をOFFにする
+#define _SECURE_SCL (0)
+#define _HAS_ITERATOR_DEBUGGING (0)
+
 // We could load multi-frame images (TIFF/GIF) into a texture array.
 // For now, we just load the first frame (note: DirectXTex supports multi-frame images)
 

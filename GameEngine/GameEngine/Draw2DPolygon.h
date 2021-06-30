@@ -41,6 +41,7 @@ typedef class CDraw2DPolygon
 		static void Draw2D(int id, float x, float y, int mx, int my, float sx, float sy ,float r);			//描画
 
 		static void Draw2DChar(ID3D11ShaderResourceView* resurec_view, float x, float y, float s, float rgba[4]);		//文字描画用
+		static void Draw2DHitBox(float x, float y, float w, float h, float rgba[4]);		//デバック当たり判定用描画
 
 		static HRESULT InitPolygonRender();	//ポリゴン表示環境の初期化
 		static void DeletePolygonRender();	//ポリゴン表示環境の破棄

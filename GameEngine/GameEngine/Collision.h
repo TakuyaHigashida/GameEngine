@@ -14,11 +14,12 @@ class HitBox
 	//CCollisionのみプライベートを公開する
 	friend class CCollision;
 	public:
-		HitBox(){}
+		HitBox() { Init(); }
 		~HitBox(){}
 		//初期化
 		void Init()
 		{
+			Is_delete = false;
 			m_x = m_y = -999.0f;
 			m_w = m_h = 0.0f;
 			m_obj = nullptr;
@@ -27,7 +28,16 @@ class HitBox
 				m_hit[i] = nullptr;
 		}
 
+		void SetDelete(bool d) { Is_delete = d; }			//削除フラグセット
+		void SetPos(float x, float y) { m_x = x; m_y = y; }					//位置セット
+		void SetWH(float w, float h) { m_w = w; m_h = h; }					//幅セット
+		void SetElement(int element) { m_element = element; }				//属性セット
+		void SetInvisible(bool invisible) { m_ls_invisible = invisible; }	//無敵セット
+		HitBox** GetHitData() { return m_hit; }		//当たった相手のヒットボックス情報取得
+
 	private:
+		//削除フラグ
+		bool Is_delete;
 		//位置
 		float m_x;
 		float m_y;
@@ -57,6 +67,7 @@ typedef class CCollision
 
 		static HitBox* HitBoxInsert(CObj* p);		//当たり判定を作成しリストに登録
 		static void CheckStart();					//list内の当たり判定全チェック開始
+		static void DrawDebug();					//デバッグ用の当たり判定描画
 
 	private:
 		//個々の当たり判定

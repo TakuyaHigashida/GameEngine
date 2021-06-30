@@ -29,6 +29,70 @@ void CDraw2DPolygon::LoadImage(int id, const wchar_t* img_name)
 
 }
 
+//デバッグ当たり判定描画用
+void CDraw2DPolygon::Draw2DHitBox(float x, float y, float w, float h, float rgba[4])
+{
+	//頂点レイアウト
+	Dev::GetDeviceContext()->IASetInputLayout(m_pVertexLayout);
+
+	//シヨウスルシェーダーの登録
+	Dev::GetDeviceContext()->VSSetShader(m_pVertexShader, NULL, 0);
+	Dev::GetDeviceContext()->PSSetShader(m_pPixelShader, NULL, 0);
+
+	//コンスタントバッファを使用するシェーダーに登録
+	Dev::GetDeviceContext()->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+	Dev::GetDeviceContext()->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+
+	//プリミティブ・トポロジーをセット
+	Dev::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	//バーテクッスバッファ登録
+	UINT stride = sizeof(POINT_LAYOUT);
+	UINT offset = 0;
+	Dev::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+
+	//インデックスバッファ登録
+	Dev::GetDeviceContext()->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+
+	//コンスタントバッファのデータ登録
+	D3D11_MAPPED_SUBRESOURCE pData;
+	if (SUCCEEDED(Dev::GetDeviceContext()->Map(m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &pData)))
+	{
+		POLYGON_BUFFER data;
+		data.color[0] = 1.0f;
+		data.color[1] = 1.0f;
+		data.color[2] = 1.0f;
+		data.color[3] = 1.0f;
+
+		//位置情報
+		data.pos[0] = x;
+		data.pos[1] = y;
+
+		//拡大率
+		data.scale[0] = 1.0f;
+		data.scale[1] = 1.0f;
+
+		//回転
+		data.rotation[0] = 0.0f;
+
+		//イメージサイズ
+		data.texsize[0] = w;
+		data.texsize[1] = h;
+		//テクスチャ無し
+		data.texsize[2] = 0.0f;		
+
+		memcpy_s(pData.pData, pData.RowPitch, (void*)&data, sizeof(POLYGON_BUFFER));
+		//コンスタントバッファをシェーダに転送
+		Dev::GetDeviceContext()->Unmap(m_pConstantBuffer, 0);
+	}
+
+	//テクスチャーサンプラを登録
+	Dev::GetDeviceContext()->PSSetSamplers(0, 1, &m_pSampleLinear);
+
+	//登録した情報をもとにポリゴンを描画
+	Dev::GetDeviceContext()->DrawIndexed(6, 0, 0);
+}
+
 //文字描画用
 void CDraw2DPolygon::Draw2DChar(ID3D11ShaderResourceView* resurec_view, float x, float y, float s, float rgba[4])
  {
@@ -78,6 +142,7 @@ void CDraw2DPolygon::Draw2DChar(ID3D11ShaderResourceView* resurec_view, float x,
 		//イメージサイズ
 		data.texsize[0] = 32;
 		data.texsize[1] = 32;
+		data.texsize[2] = 1.0f;		//テクスチャ有り
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&data, sizeof(POLYGON_BUFFER));
 		//コンスタントバッファをシェーダに転送
@@ -143,6 +208,7 @@ void CDraw2DPolygon::Draw2D(int id, float x, float y, int mx, int my, float sx, 
 		//イメージサイズ
 		data.texsize[0] = m_width[id];
 		data.texsize[1] = m_height[id];
+		data.texsize[2] = 1.0f;		//テクスチャ有り
 
 		memcpy_s(pData.pData, pData.RowPitch, (void*)&data, sizeof(POLYGON_BUFFER));
 		//コンスタントバッファをシェーダに転送
@@ -274,7 +340,7 @@ HRESULT CDraw2DPolygon::InitPolygonRender()
 	unsigned short hIndexData[2][3] =
 	{
 		{0, 1, 2, },	//1面
-		{0, 2, 3, },	//2面
+		{0, 3, 2, },	//2面
 	};
 
 	//バッファにインデックスステータス設定

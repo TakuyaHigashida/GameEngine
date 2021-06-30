@@ -80,12 +80,17 @@ vertexOut vs(vertexIn IN)
 float4 ps(vertexOut IN) : SV_Target
 {
 	float4 col = IN.col * color;
-	//UVからテクスチャの色の値を習得
-	float4	tex = txDiffuse.Sample(samLinear, IN.uv);
 
-	//colにテクスチャの色合成
-	col *= tex;
-	//col.a = 1.0f;
-
+	if (texsize.z == 1.0f)
+	{
+		//UVからテクスチャの色の値を習得
+		float4	tex = txDiffuse.Sample(samLinear, IN.uv);
+		//colにテクスチャの色合成
+		col *= tex;
+	}
+	else
+	{
+		//テクスチャ無しのため何もしない
+	}
 	return col;
 }
